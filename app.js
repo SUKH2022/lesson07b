@@ -42,6 +42,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// TODO: Define strategies: Local, Google, Facebook etc.
+
 // Route Definitions
 app.use("/", indexRouter);
 // app.use('/users', usersRouter);
