@@ -7,20 +7,19 @@ var passport = require("passport");
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-
 // Authentication functionality will be part of the index route (Home Page)
 
 // GET /login > load the login form
 router.get("/login", (req, res, next) => {
-  let message = req.session.message || []; // initialize message as an empty array if null
-  req.session.message = []; // clear messages to prevent them from showing up again
-  res.render("login", {title: "Log In to Your Account", message: message});
-})
+  let messages = req.session.messages || []; // initialize messages as an empty array if null
+  req.session.messages = []; // clear messages to prevent them from showing up again
+  res.render("login", { title: "Log In to Your Account", messages: messages});
+});
 // POST /login > when user clicks on the button
 router.post("/login", passport.authenticate("local", {
-  successRedirect: "/project",
+  successRedirect: "/projects",
   failureRedirect: "/login",
-  failureMessage: "Invalid Login",
+  failureMessage: "Invalid Login", // to handle messages in the login page and show alerts
 }));
 // GET /register > load the registration form
 router.get("/register", (req, res, next) => {
@@ -44,7 +43,4 @@ router.post("/register", (req, res, next) => {
     } // callback function
   );
 });
-
-// POST /register > when user clicks on the button
-router.post("/register", ())
 module.exports = router;
