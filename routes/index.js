@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
+var passport = require("passport");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -10,7 +11,17 @@ router.get('/', function(req, res, next) {
 // Authentication functionality will be part of the index route (Home Page)
 
 // GET /login > load the login form
+router.get("/login", (req, res, next) => {
+  let message = req.session.message || []; // initialize message as an empty array if null
+  req.session.message = []; // clear messages to prevent them from showing up again
+  res.render("login", {title: "Log In to Your Account", message: message});
+})
 // POST /login > when user clicks on the button
+router.post("/login", passport.authenticate("local", {
+  successRedirect: "/project",
+  failureRedirect: "/login",
+  failureMessage: "Invalid Login",
+}));
 // GET /register > load the registration form
 router.get("/register", (req, res, next) => {
   res.render("register", { title: "Sign Up for an Account" });
