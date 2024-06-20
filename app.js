@@ -17,6 +17,7 @@ var hbs = require("hbs");
 // import passport and session modules
 var passport = require("passport")
 var session = require("express-session")
+var User = require("./models/user")
 
 // Create and configure app object
 var app = express();
@@ -43,6 +44,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // TODO: Define strategies: Local, Google, Facebook etc.
+passport.use(User.createStrategy()); // createStrategy() id provided by passport-local-mongoose
+passport.serializeUser(User.serializeUser()); //serializeUser() is provided by passport-local-mongoose
+passport.deserializeUser(User.deserializeUser()); // deserializeUser() is provided by passport-local-mongoose
 
 // Route Definitions
 app.use("/", indexRouter);
